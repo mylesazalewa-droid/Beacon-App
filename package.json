@@ -1,0 +1,86 @@
+{
+  "name": "beacon",
+  "version": "0.2.0",
+  "description": "Free, local, open-source church media library",
+  "main": "electron/main.js",
+  "author": "Beacon Contributors",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently -k -n VITE,ELECTRON -c cyan,yellow \"vite\" \"wait-on http://localhost:5173 && ELECTRON_IS_DEV=1 electron .\"",
+    "build": "vite build && electron-builder",
+    "build:mac": "python3 assets/create-dmg-bg.py && osacompile -o 'assets/Uninstall Beacon.app' assets/uninstall.applescript && cp assets/uninstall-icon.icns 'assets/Uninstall Beacon.app/Contents/Resources/applet.icns' && vite build && electron-builder --mac",
+    "preview": "vite preview",
+    "backend": "python3 backend/main.py"
+  },
+  "dependencies": {
+    "electron-log": "^5.1.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "electron": "^32.1.2",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "vite": "^5.4.8",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.beacon.app",
+    "productName": "Beacon",
+    "copyright": "Copyright © 2026 Beacon Contributors",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        { "target": "dmg", "arch": ["arm64"] },
+        { "target": "zip", "arch": ["arm64"] }
+      ],
+      "icon": "assets/icon.icns",
+      "minimumSystemVersion": "12.0",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "title": "Beacon",
+      "background": "assets/dmg-background.png",
+      "window": { "width": 700, "height": 430 },
+      "contents": [
+        { "x": 150, "y": 215, "type": "file" },
+        { "x": 350, "y": 215, "type": "link", "path": "/Applications" },
+        { "x": 555, "y": 215, "type": "file", "path": "assets/Uninstall Beacon.app" }
+      ]
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "backend",
+        "to": "backend",
+        "filter": ["**/*.py", "!python-runtime{,/**}"]
+      },
+      {
+        "from": "backend/python-runtime",
+        "to": "python-runtime"
+      },
+      {
+        "from": "requirements.txt",
+        "to": "requirements.txt"
+      },
+      {
+        "from": "assets/bin",
+        "to": "bin"
+      }
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    },
+    "asar": true
+  }
+}

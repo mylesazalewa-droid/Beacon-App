@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Beacon — Church Media Library, Powered by AI</title>
+<style>
+:root {
+  --bg: #E8E9F0;
+  --surface: #ECEDF3;
+  --accent: #6B8FFF;
+  --accent2: #A78BFA;
+  --text: #2A2D3E;
+  --text-muted: #6B7280;
+  --text-dim: #9CA3AF;
+  --green: #4CAF50;
+  --shadow-raise: 6px 6px 16px #c8cad4, -4px -4px 12px #ffffff;
+  --shadow-raise-lg: 10px 10px 28px #c0c2cc, -6px -6px 18px #ffffff;
+  --shadow-inset: inset 3px 3px 8px #c8cad4, inset -3px -3px 8px #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+/* ── Nav ── */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; background:rgba(232,233,240,0.88); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.6); transition:box-shadow .3s; }
+nav.scrolled { box-shadow:0 4px 24px rgba(107,143,255,0.12); }
+.nav-logo { display:flex; align-items:center; gap:10px; }
+.nav-logo-icon { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(107,143,255,0.4); }
+.nav-logo-text { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+.nav-links { display:flex; gap:28px; }
+.nav-links a { text-decoration:none; font-size:14px; font-weight:500; color:var(--text-muted); transition:color .2s; }
+.nav-links a:hover { color:var(--accent); }
+.nav-cta { padding:9px 22px; border-radius:10px; border:none; cursor:pointer; font-size:14px; font-weight:600; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 4px 14px rgba(107,143,255,0.4); transition:transform .2s,box-shadow .2s; text-decoration:none; }
+.nav-cta:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(107,143,255,0.5); }
+
+/* ── Hero ── */
+.hero { min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:120px 40px 80px; position:relative; overflow:hidden; }
+.hero-orb { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; }
+.orb1 { width:600px; height:600px; top:-200px; left:-150px; background:radial-gradient(circle,rgba(107,143,255,.18) 0%,transparent 70%); animation:orbFloat 8s ease-in-out infinite; }
+.orb2 { width:500px; height:500px; bottom:-100px; right:-100px; background:radial-gradient(circle,rgba(167,139,250,.15) 0%,transparent 70%); animation:orbFloat 10s ease-in-out infinite reverse; }
+@keyframes orbFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(.97)} }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:100px; margin-bottom:28px; background:var(--surface); box-shadow:var(--shadow-raise); font-size:12px; font-weight:600; color:var(--accent); letter-spacing:.05em; text-transform:uppercase; animation:slideUp .7s cubic-bezier(.16,1,.3,1); }
+.badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+.hero-title { font-size:clamp(44px,7vw,86px); font-weight:900; letter-spacing:-3px; line-height:1.0; margin-bottom:22px; animation:slideUp .8s cubic-bezier(.16,1,.3,1) .1s both; }
+.grad { background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,#EC4899 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero-sub { font-size:clamp(17px,2.5vw,21px); color:var(--text-muted); max-width:600px; line-height:1.65; margin-bottom:40px; animation:slideUp .8s cubic-bezier(.16,1,.3,1) .2s both; }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:slideUp .8s cubic-bezier(.16,1,.3,1) .3s both; }
+.btn-primary { display:inline-flex; align-items:center; gap:8px; padding:14px 32px; border-radius:14px; border:none; cursor:pointer; font-size:16px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 6px 20px rgba(107,143,255,.45); transition:transform .2s,box-shadow .2s; text-decoration:none; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(107,143,255,.55); }
+.btn-secondary { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:14px; border:none; cursor:pointer; font-size:16px; font-weight:600; color:var(--text-muted); background:var(--surface); box-shadow:var(--shadow-raise); transition:transform .2s,box-shadow .2s,color .2s; text-decoration:none; }
+.btn-secondary:hover { transform:translateY(-2px); box-shadow:var(--shadow-raise-lg); color:var(--accent); }
+@keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideDown { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ── App Mockup ── */
+.hero-mockup { margin-top:60px; width:100%; max-width:920px; animation:slideUp 1s cubic-bezier(.16,1,.3,1) .4s both; }
+.app-window { background:var(--surface); border-radius:20px; box-shadow:0 30px 80px rgba(42,45,62,.18),0 0 0 1px rgba(255,255,255,.7); overflow:hidden; }
+.app-titlebar { background:var(--bg); padding:14px 18px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(200,202,212,.6); }
+.tls { display:flex; gap:7px; }
+.tl { width:13px; height:13px; border-radius:50%; }
+.tl-r{background:#FF5F57} .tl-y{background:#FFBD2E} .tl-g{background:#28C840}
+.app-body { display:flex; height:460px; }
+.app-sidebar { width:195px; flex-shrink:0; background:var(--bg); border-right:1px solid rgba(200,202,212,.4); padding:14px 10px; display:flex; flex-direction:column; gap:2px; }
+.sb-sec { font-size:10px; font-weight:700; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; padding:10px 10px 5px; }
+.sb-item { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:8px; font-size:12.5px; font-weight:500; color:var(--text-muted); cursor:default; }
+.sb-item.on { background:linear-gradient(135deg,rgba(107,143,255,.15),rgba(167,139,250,.1)); color:var(--accent); font-weight:600; }
+.sb-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.app-main { flex:1; padding:18px; overflow:hidden; position:relative; }
+.app-search { display:flex; align-items:center; gap:9px; padding:9px 13px; border-radius:11px; background:var(--bg); box-shadow:var(--shadow-inset); margin-bottom:16px; }
+.app-search-text { font-size:13px; color:var(--text); flex:1; }
+.app-kbd { font-size:10px; color:var(--text-dim); background:var(--surface); border-radius:5px; padding:2px 6px; box-shadow:var(--shadow-raise); }
+.mgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.mcard { border-radius:9px; overflow:hidden; aspect-ratio:16/9; position:relative; transition:transform .2s; cursor:pointer; }
+.mcard:hover { transform:scale(1.04); }
+.mcard-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+.mcard-tag { position:absolute; bottom:3px; left:3px; right:3px; background:rgba(0,0,0,.55); backdrop-filter:blur(4px); border-radius:4px; padding:2px 5px; font-size:8.5px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mcard-ai { position:absolute; top:3px; right:3px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:3px; padding:1px 4px; font-size:8px; font-weight:700; color:#fff; }
+
+/* ── Ticker ── */
+.ticker-wrap { overflow:hidden; background:linear-gradient(135deg,var(--accent),var(--accent2)); padding:18px 0; }
+.ticker { display:flex; animation:ticker 22s linear infinite; white-space:nowrap; }
+.ticker-item { display:inline-flex; align-items:center; gap:8px; padding:0 30px; font-size:13.5px; font-weight:600; color:rgba(255,255,255,.9); }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── Sections ── */
+section { padding:100px 40px; }
+.section-label { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+.section-title { font-size:clamp(30px,5vw,50px); font-weight:900; letter-spacing:-2px; line-height:1.1; margin-bottom:16px; }
+.section-sub { font-size:17px; color:var(--text-muted); max-width:560px; line-height:1.65; }
+.center { text-align:center; }
+.center .section-sub { margin:0 auto; }
+
+/* ── Stats ── */
+.stats-row { display:flex; flex-wrap:wrap; max-width:820px; margin:56px auto 0; background:var(--surface); border-radius:20px; box-shadow:var(--shadow-raise-lg); overflow:hidden; }
+.stat-item { flex:1; min-width:160px; padding:34px 28px; text-align:center; position:relative; }
+.stat-item:not(:last-child)::after { content:''; position:absolute; right:0; top:20%; bottom:20%; width:1px; background:rgba(200,202,212,.6); }
+.stat-num { font-size:40px; font-weight:900; letter-spacing:-2px; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.stat-label { font-size:13px; color:var(--text-muted); font-weight:500; margin-top:5px; }
+
+/* ── Feature cards ── */
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:22px; max-width:1080px; margin:56px auto 0; }
+.fcard { background:var(--surface); border-radius:20px; padding:30px; position:relative; overflow:hidden; box-shadow:var(--shadow-raise); transition:transform .3s,box-shadow .3s; cursor:default; }
+.fcard:hover { transform:translateY(-6px); box-shadow:var(--shadow-raise-lg); }
+.fcard::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0; transition:opacity .3s; }
+.fcard:hover::before { opacity:1; }
+.fcard-icon { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:24px; box-shadow:var(--shadow-raise); }
+.fcard-title { font-size:18px; font-weight:700; margin-bottom:9px; letter-spacing:-.4px; }
+.fcard-desc { font-size:14px; color:var(--text-muted); line-height:1.65; }
+.pill-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:14px; }
+.pill { padding:3px 10px; border-radius:100px; font-size:11px; font-weight:500; background:var(--bg); box-shadow:var(--shadow-raise); color:var(--text-muted); }
+
+/* ── HOW IT WORKS — interactive ── */
+.hiw-wrap { max-width:1100px; margin:60px auto 0; display:grid; grid-template-columns:300px 1fr; gap:32px; min-height:560px; }
+.hiw-steps { display:flex; flex-direction:column; gap:6px; }
+.hiw-step-btn { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; border-radius:16px; border:none; background:transparent; cursor:pointer; text-align:left; transition:background .2s,box-shadow .2s; width:100%; }
+.hiw-step-btn:hover { background:var(--surface); box-shadow:var(--shadow-raise); }
+.hiw-step-btn.active { background:var(--surface); box-shadow:var(--shadow-raise); }
+.hiw-step-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#fff; background:var(--bg); box-shadow:var(--shadow-raise); flex-shrink:0; transition:background .3s,box-shadow .3s; color:var(--text-muted); }
+.hiw-step-btn.active .hiw-step-num { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; box-shadow:0 4px 14px rgba(107,143,255,.4); }
+.hiw-step-text { flex:1; }
+.hiw-step-title { font-size:14px; font-weight:700; color:var(--text-muted); transition:color .2s; }
+.hiw-step-btn.active .hiw-step-title { color:var(--text); }
+.hiw-step-desc { font-size:12px; color:var(--text-dim); line-height:1.5; margin-top:3px; max-height:0; overflow:hidden; transition:max-height .3s; }
+.hiw-step-btn.active .hiw-step-desc { max-height:100px; }
+.hiw-progress { height:3px; border-radius:2px; background:var(--bg); box-shadow:var(--shadow-inset); margin-top:8px; overflow:hidden; display:none; }
+.hiw-step-btn.active .hiw-progress { display:block; }
+.hiw-progress-bar { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:none; }
+
+/* ── HIW Demo Panel ── */
+.hiw-demo { background:var(--surface); border-radius:24px; box-shadow:var(--shadow-raise-lg); overflow:hidden; position:relative; }
+.hiw-demo-panel { position:absolute; inset:0; opacity:0; pointer-events:none; transition:opacity .35s; display:flex; flex-direction:column; }
+.hiw-demo-panel.active { opacity:1; pointer-events:auto; }
+.demo-titlebar { background:var(--bg); padding:12px 16px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(200,202,212,.5); flex-shrink:0; }
+.demo-title-txt { font-size:12px; font-weight:600; color:var(--text-muted); margin:0 auto; }
+.demo-body { flex:1; padding:22px; overflow:hidden; position:relative; }
+
+/* Demo 1 — Install */
+.install-steps { display:flex; flex-direction:column; gap:12px; }
+.install-row { display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:12px; background:var(--bg); box-shadow:var(--shadow-inset); }
+.install-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; background:var(--surface); box-shadow:var(--shadow-raise); }
+.install-info { flex:1; }
+.install-name { font-size:13px; font-weight:600; }
+.install-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
+.install-status { font-size:12px; font-weight:600; }
+.i-bar { height:4px; border-radius:2px; background:rgba(200,202,212,.5); margin-top:6px; overflow:hidden; }
+.i-bar-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.5s linear; }
+
+/* Demo 2 — Add Folders */
+.folder-list { display:flex; flex-direction:column; gap:8px; }
+.folder-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; background:var(--bg); box-shadow:var(--shadow-inset); }
+.folder-icon-wrap { font-size:22px; }
+.folder-info { flex:1; }
+.folder-name { font-size:13px; font-weight:600; }
+.folder-path { font-size:11px; color:var(--text-dim); font-family:monospace; margin-top:2px; }
+.folder-count { font-size:11px; color:var(--accent); font-weight:600; }
+.add-folder-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:12px; border:2px dashed rgba(107,143,255,.3); background:transparent; cursor:pointer; font-size:13px; font-weight:600; color:var(--accent); transition:background .2s,border-color .2s; }
+.add-folder-btn:hover { background:rgba(107,143,255,.06); border-color:var(--accent); }
+
+/* Demo 3 — AI Analysis */
+.analysis-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.analysis-card { border-radius:12px; overflow:hidden; background:var(--bg); box-shadow:var(--shadow-raise); }
+.analysis-thumb { aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; font-size:24px; position:relative; }
+.analysis-tags { padding:8px; display:flex; flex-wrap:wrap; gap:4px; min-height:32px; }
+.atag { padding:2px 7px; border-radius:100px; font-size:10px; font-weight:600; color:var(--accent); background:rgba(107,143,255,.12); opacity:0; transform:scale(.85); transition:opacity .3s,transform .3s; }
+.atag.show { opacity:1; transform:scale(1); }
+.analysis-bar { padding:0 8px 8px; }
+.a-progress { height:3px; border-radius:2px; background:rgba(200,202,212,.5); overflow:hidden; }
+.a-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--green)); transition:width .4s ease; }
+.analysis-status { font-size:10px; font-weight:600; padding:2px 8px 6px; }
+
+/* Demo 4 — Search */
+.search-demo-wrap { display:flex; flex-direction:column; height:100%; }
+.s-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; background:var(--bg); box-shadow:var(--shadow-inset); margin-bottom:16px; flex-shrink:0; }
+.s-input { flex:1; font-size:14px; color:var(--text); border:none; background:none; outline:none; caret-color:var(--accent); font-family:inherit; }
+.s-cursor { display:inline-block; width:2px; height:16px; background:var(--accent); animation:blink 1s infinite; vertical-align:middle; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.s-results { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; flex:1; }
+.s-card { border-radius:10px; overflow:hidden; position:relative; aspect-ratio:16/10; opacity:0; transform:translateY(8px) scale(.97); transition:opacity .3s,transform .3s; }
+.s-card.show { opacity:1; transform:translateY(0) scale(1); }
+.s-card-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:28px; }
+.s-card-label { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,.65)); padding:10px 8px 6px; font-size:10px; color:#fff; font-weight:500; }
+.s-card-score { position:absolute; top:5px; right:5px; background:rgba(107,143,255,.9); border-radius:4px; padding:2px 6px; font-size:9px; font-weight:700; color:#fff; }
+.s-meta { margin-top:10px; font-size:11px; color:var(--text-dim); text-align:center; flex-shrink:0; }
+
+/* Demo 5 — Face Recognition */
+.face-demo-wrap { display:flex; flex-direction:column; gap:12px; height:100%; }
+.face-stage { flex:1; background:var(--bg); border-radius:14px; box-shadow:var(--shadow-inset); position:relative; overflow:hidden; min-height:200px; }
+.face-img-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:52px; }
+.face-box { position:absolute; border:2px solid var(--accent); border-radius:4px; transition:all .4s cubic-bezier(.16,1,.3,1); }
+.face-name-tag { position:absolute; bottom:-22px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; white-space:nowrap; opacity:0; transition:opacity .3s .3s; }
+.face-box.found .face-name-tag { opacity:1; }
+.face-matches { display:flex; flex-direction:column; gap:8px; }
+.face-match-row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; background:var(--bg); box-shadow:var(--shadow-inset); opacity:0; transform:translateX(-10px); transition:opacity .3s,transform .3s; }
+.face-match-row.show { opacity:1; transform:translateX(0); }
+.face-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; background:var(--surface); box-shadow:var(--shadow-raise); flex-shrink:0; }
+.face-match-info { flex:1; }
+.face-match-name { font-size:13px; font-weight:600; }
+.face-match-count { font-size:11px; color:var(--text-dim); }
+.face-match-conf { font-size:11px; font-weight:600; color:var(--green); }
+
+/* Demo 6 — Cloud Import */
+.cloud-demo-wrap { display:flex; flex-direction:column; gap:10px; height:100%; }
+.cloud-url-bar { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; background:var(--bg); box-shadow:var(--shadow-inset); flex-shrink:0; }
+.cloud-url-text { flex:1; font-size:12px; color:var(--text-muted); font-family:monospace; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.cloud-browser { flex:1; background:var(--bg); border-radius:12px; box-shadow:var(--shadow-inset); padding:14px; overflow:hidden; }
+.cloud-file-list { display:flex; flex-direction:column; gap:6px; }
+.cfile { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:var(--surface); box-shadow:var(--shadow-raise); opacity:0; transform:translateY(6px); transition:opacity .3s,transform .3s; }
+.cfile.show { opacity:1; transform:translateY(0); }
+.cfile-icon { font-size:18px; flex-shrink:0; }
+.cfile-name { flex:1; font-size:12px; font-weight:500; }
+.cfile-size { font-size:11px; color:var(--text-dim); }
+.cfile-status { font-size:11px; font-weight:600; }
+.import-bar { padding:8px 0; flex-shrink:0; }
+.import-prog { height:5px; border-radius:3px; background:rgba(200,202,212,.5); overflow:hidden; }
+.import-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--green)); transition:width .5s ease; }
+.import-txt { font-size:11px; color:var(--text-muted); text-align:center; margin-top:5px; }
+
+/* ── AI Search Demo Section ── */
+.search-section { background:linear-gradient(135deg,#1a1c2e,#2d1f5e); color:#fff; overflow:hidden; position:relative; }
+.search-section .section-label { color:#A78BFA; }
+.search-section .section-sub { color:rgba(255,255,255,.6); }
+.grid-bg { position:absolute; inset:0; opacity:.04; background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px); background-size:40px 40px; }
+.sdemo-window { max-width:780px; margin:50px auto 0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:20px; overflow:hidden; backdrop-filter:blur(20px); box-shadow:0 30px 80px rgba(0,0,0,.4); }
+.sdemo-top { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:12px; }
+.sdemo-search { flex:1; display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:10px; padding:8px 14px; }
+.sdemo-grid { padding:20px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.sdemo-card { border-radius:10px; overflow:hidden; aspect-ratio:16/9; position:relative; opacity:0; transform:scale(.9); transition:opacity .4s,transform .4s; }
+.sdemo-card.show { opacity:1; transform:scale(1); }
+.sdemo-badge { position:absolute; top:5px; right:5px; background:rgba(107,143,255,.9); border-radius:4px; padding:2px 7px; font-size:9.5px; font-weight:700; color:#fff; }
+.sdemo-label { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,.7)); padding:10px 8px 6px; font-size:10px; color:#fff; font-weight:500; }
+
+/* ── Cloud section ── */
+.cloud-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; max-width:900px; margin:56px auto 0; }
+.cloud-card { border-radius:20px; padding:30px; background:var(--surface); box-shadow:var(--shadow-raise); text-align:center; }
+.cloud-logo { width:60px; height:60px; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; box-shadow:var(--shadow-raise); }
+.cloud-name { font-size:17px; font-weight:700; margin-bottom:8px; }
+.cloud-desc { font-size:13px; color:var(--text-muted); line-height:1.6; }
+.cloud-methods { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+.cloud-method { padding:3px 10px; border-radius:100px; font-size:11px; font-weight:600; background:var(--bg); box-shadow:var(--shadow-raise); color:var(--text-muted); }
+
+/* ── CTA ── */
+.cta-section { padding:120px 40px; text-align:center; position:relative; overflow:hidden; }
+.cta-bg { position:absolute; inset:0; background:linear-gradient(135deg,rgba(107,143,255,.06),rgba(167,139,250,.06),rgba(236,72,153,.04)); }
+.cta-card { max-width:680px; margin:0 auto; background:var(--surface); border-radius:28px; padding:60px; box-shadow:var(--shadow-raise-lg); position:relative; }
+.cta-title { font-size:clamp(34px,5vw,50px); font-weight:900; letter-spacing:-2px; margin-bottom:16px; }
+.cta-sub { font-size:17px; color:var(--text-muted); line-height:1.6; margin-bottom:38px; }
+.cta-reqs { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:28px; }
+.cta-req { display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--text-muted); }
+.req-dot { width:6px; height:6px; border-radius:50%; background:var(--green); flex-shrink:0; }
+
+/* ── Footer ── */
+footer { padding:40px; text-align:center; border-top:1px solid rgba(200,202,212,.4); }
+
+/* ── Reveal ── */
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+
+@media(max-width:900px){
+  .hiw-wrap{grid-template-columns:1fr}
+  .cloud-grid{grid-template-columns:1fr}
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  section{padding:70px 24px}
+  .cta-card{padding:36px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z" fill="rgba(255,255,255,.9)"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,.5)"/></svg>
+    </div>
+    <span class="nav-logo-text">Beacon</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it Works</a>
+    <a href="#cloud">Cloud</a>
+    <a href="#download">Download</a>
+  </div>
+  <a href="../release/Beacon-0.2.0-arm64.dmg" download="Beacon-0.2.0-arm64.dmg" class="nav-cta">Download Free →</a>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div id="particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div class="hero-badge"><div class="badge-dot"></div>AI-Powered · macOS · Free &amp; Open Source</div>
+  <h1 class="hero-title">Your church media,<br/><span class="grad">finally organized.</span></h1>
+  <p class="hero-sub">Beacon is an AI-powered media library built for church teams. It automatically tags footage, recognizes faces, transcribes sermons, and makes everything instantly searchable — no technical knowledge required.</p>
+  <div class="hero-btns">
+    <a href="../release/Beacon-0.2.0-arm64.dmg" download="Beacon-0.2.0-arm64.dmg" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download for Mac — Free
+    </a>
+    <a href="#how-it-works" class="btn-secondary">See how it works →</a>
+  </div>
+  <div class="hero-mockup" style="margin-top:60px;width:100%;max-width:920px;animation:slideUp 1s cubic-bezier(.16,1,.3,1) .4s both;">
+    <div class="app-window">
+      <div class="app-titlebar">
+        <div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+        <span style="font-size:12px;font-weight:600;color:var(--text-muted);margin:0 auto;">Beacon — Church Media Library</span>
+      </div>
+      <div class="app-body">
+        <div class="app-sidebar">
+          <div class="sb-sec">Library</div>
+          <div class="sb-item on"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>All Media</div>
+          <div class="sb-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Videos</div>
+          <div class="sb-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Photos</div>
+          <div class="sb-sec">Categories</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#6B8FFF"></div>Worship</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#4CAF50"></div>Sermons</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#FF9800"></div>Youth</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#E91E63"></div>Events</div>
+          <div class="sb-sec">Cloud</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#0078D4"></div>OneDrive</div>
+          <div class="sb-item"><div class="sb-dot" style="background:#0061FF"></div>Dropbox</div>
+        </div>
+        <div class="app-main">
+          <div class="app-search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="app-search-text" id="hero-search">baptism service outdoors 2024</span>
+            <span class="app-kbd">⌘K</span>
+          </div>
+          <div class="mgrid" id="hero-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ticker ── -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">🎬 Auto-tagging <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">👤 Face Recognition <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🎤 Speech Transcription <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🔍 Semantic Search <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">☁️ Cloud Import <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">📁 Smart Categories <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🤖 Runs Locally <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🔒 100% Private <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🎬 Auto-tagging <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">👤 Face Recognition <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🎤 Speech Transcription <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🔍 Semantic Search <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">☁️ Cloud Import <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">📁 Smart Categories <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🤖 Runs Locally <span style="opacity:.4">·</span></span>
+    <span class="ticker-item">🔒 100% Private <span style="opacity:.4">·</span></span>
+  </div>
+</div>
+
+<!-- ── Stats ── -->
+<section style="padding:80px 40px;">
+  <div class="stats-row reveal">
+    <div class="stat-item"><div class="stat-num" data-count="100">0</div><div class="stat-label">% Private — runs on your Mac</div></div>
+    <div class="stat-item"><div class="stat-num">Free</div><div class="stat-label">Open source, forever free</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="3">0</div><div class="stat-label">Cloud platforms supported</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="12">0</div><div class="stat-label">Supported file formats</div></div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section id="features" style="padding-top:30px;">
+  <div class="center reveal"><div class="section-label">Everything you need</div><h2 class="section-title">Powerful AI, zero complexity.</h2><p class="section-sub">Built for church media teams — from weekend volunteers to full-time creative directors.</p></div>
+  <div class="features-grid">
+    <div class="fcard reveal d1"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(107,143,255,.15),rgba(167,139,250,.1))">🔍</div><div class="fcard-title">Semantic Search</div><div class="fcard-desc">Describe what you're looking for in plain English — "worship team at sunset" — and Beacon finds it. AI understands meaning, not just filenames.</div><div class="pill-row"><span class="pill">Natural language</span><span class="pill">Visual search</span><span class="pill">Speech search</span></div></div>
+    <div class="fcard reveal d2"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(76,175,80,.15),rgba(129,199,132,.1))">👤</div><div class="fcard-title">Face Recognition</div><div class="fcard-desc">Tag your pastor, worship leaders, or congregation members and instantly find every clip they appear in — across years of footage.</div><div class="pill-row"><span class="pill">Auto-detect</span><span class="pill">Name tagging</span><span class="pill">Filter by person</span></div></div>
+    <div class="fcard reveal d3"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,183,77,.1))">🎤</div><div class="fcard-title">Speech Transcription</div><div class="fcard-desc">Every video is automatically transcribed with Whisper AI. Search for exact words spoken in any sermon or worship set.</div><div class="pill-row"><span class="pill">Whisper AI</span><span class="pill">Multi-language</span><span class="pill">Searchable</span></div></div>
+    <div class="fcard reveal d1"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(244,114,182,.1))">🏷️</div><div class="fcard-title">Automatic AI Tagging</div><div class="fcard-desc">Vision AI analyzes every photo and video — recognizing scenes, objects, emotions, and lighting. Your library tags itself.</div><div class="pill-row"><span class="pill">Scene detection</span><span class="pill">Object recognition</span><span class="pill">Auto-categorize</span></div></div>
+    <div class="fcard reveal d2"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(103,232,249,.1))">☁️</div><div class="fcard-title">Cloud Storage Import</div><div class="fcard-desc">Import from OneDrive, Google Drive, or Dropbox — paste a shared link and browse in-app. ZIP files are auto-extracted.</div><div class="pill-row"><span class="pill">OneDrive</span><span class="pill">Google Drive</span><span class="pill">Dropbox</span></div></div>
+    <div class="fcard reveal d3"><div class="fcard-icon" style="background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(196,181,253,.1))">🔒</div><div class="fcard-title">100% Local &amp; Private</div><div class="fcard-desc">All AI runs on your Mac — nothing sent to the cloud. Your church's media stays on your hardware. Works completely offline.</div><div class="pill-row"><span class="pill">Offline AI</span><span class="pill">No data sent out</span><span class="pill">Apple Silicon</span></div></div>
+  </div>
+</section>
+
+<!-- ── How it Works — Interactive ── -->
+<section id="how-it-works" style="background:var(--surface);">
+  <div class="center reveal"><div class="section-label">Getting Started</div><h2 class="section-title">Up and running in minutes.</h2><p class="section-sub">Click each step to see an interactive preview of exactly what happens.</p></div>
+  <div class="hiw-wrap">
+    <!-- Step nav -->
+    <div class="hiw-steps" id="hiw-steps">
+      <button class="hiw-step-btn active" data-step="0" onclick="hiwGo(0)">
+        <div class="hiw-step-num">1</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">Install Beacon</div>
+          <div class="hiw-step-desc">Download the DMG, drag to Applications. The setup wizard installs Ollama and AI models with one click.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb0"></div></div>
+        </div>
+      </button>
+      <button class="hiw-step-btn" data-step="1" onclick="hiwGo(1)">
+        <div class="hiw-step-num">2</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">Add Your Media Folders</div>
+          <div class="hiw-step-desc">Point Beacon at your existing drives. It watches them automatically — new files are picked up instantly.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb1"></div></div>
+        </div>
+      </button>
+      <button class="hiw-step-btn" data-step="2" onclick="hiwGo(2)">
+        <div class="hiw-step-num">3</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">AI Analyzes Everything</div>
+          <div class="hiw-step-desc">Vision AI, Whisper transcription, and face detection run automatically in the background on every file.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb2"></div></div>
+        </div>
+      </button>
+      <button class="hiw-step-btn" data-step="3" onclick="hiwGo(3)">
+        <div class="hiw-step-num">4</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">Search in Plain English</div>
+          <div class="hiw-step-desc">Hit ⌘K anywhere. Type what you remember — Beacon finds the exact clip in under a second.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb3"></div></div>
+        </div>
+      </button>
+      <button class="hiw-step-btn" data-step="4" onclick="hiwGo(4)">
+        <div class="hiw-step-num">5</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">Recognize Your People</div>
+          <div class="hiw-step-desc">Tag faces once — Beacon finds every appearance across your entire library automatically.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb4"></div></div>
+        </div>
+      </button>
+      <button class="hiw-step-btn" data-step="5" onclick="hiwGo(5)">
+        <div class="hiw-step-num">6</div>
+        <div class="hiw-step-text">
+          <div class="hiw-step-title">Import from Cloud</div>
+          <div class="hiw-step-desc">Paste any shared link from Dropbox, OneDrive, or Google Drive. Downloads are captured and imported automatically.</div>
+          <div class="hiw-progress"><div class="hiw-progress-bar" id="hpb5"></div></div>
+        </div>
+      </button>
+    </div>
+
+    <!-- Demo panels -->
+    <div class="hiw-demo">
+
+      <!-- Panel 0: Install -->
+      <div class="hiw-demo-panel active" id="panel0">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">Beacon Setup</span></div>
+        <div class="demo-body">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:40px;margin-bottom:8px;">🔭</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:4px;">Setting up Beacon</div>
+            <div style="font-size:13px;color:var(--text-muted);">Installing AI models — this only happens once</div>
+          </div>
+          <div class="install-steps">
+            <div class="install-row" id="ir0">
+              <div class="install-icon">🤖</div>
+              <div class="install-info">
+                <div class="install-name">Ollama Runtime</div>
+                <div class="install-sub">Local AI engine</div>
+                <div class="i-bar"><div class="i-bar-fill" id="ib0" style="width:0%"></div></div>
+              </div>
+              <div class="install-status" id="is0" style="color:var(--text-dim)">Waiting…</div>
+            </div>
+            <div class="install-row" id="ir1">
+              <div class="install-icon">👁️</div>
+              <div class="install-info">
+                <div class="install-name">LLaVA Vision Model</div>
+                <div class="install-sub">4.1 GB · Image understanding</div>
+                <div class="i-bar"><div class="i-bar-fill" id="ib1" style="width:0%"></div></div>
+              </div>
+              <div class="install-status" id="is1" style="color:var(--text-dim)">Waiting…</div>
+            </div>
+            <div class="install-row" id="ir2">
+              <div class="install-icon">🎤</div>
+              <div class="install-info">
+                <div class="install-name">Whisper Large-v3</div>
+                <div class="install-sub">1.5 GB · Speech transcription</div>
+                <div class="i-bar"><div class="i-bar-fill" id="ib2" style="width:0%"></div></div>
+              </div>
+              <div class="install-status" id="is2" style="color:var(--text-dim)">Waiting…</div>
+            </div>
+            <div class="install-row" id="ir3">
+              <div class="install-icon">👤</div>
+              <div class="install-info">
+                <div class="install-name">Face Detection Model</div>
+                <div class="install-sub">280 MB · Face recognition</div>
+                <div class="i-bar"><div class="i-bar-fill" id="ib3" style="width:0%"></div></div>
+              </div>
+              <div class="install-status" id="is3" style="color:var(--text-dim)">Waiting…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 1: Add Folders -->
+      <div class="hiw-demo-panel" id="panel1">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">Settings → Folders</span></div>
+        <div class="demo-body">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text-muted)">WATCHED FOLDERS</div>
+          <div class="folder-list" id="folder-list">
+            <div class="folder-row">
+              <div class="folder-icon-wrap">📁</div>
+              <div class="folder-info">
+                <div class="folder-name">Sunday Services</div>
+                <div class="folder-path">/Volumes/MediaDrive/Services</div>
+              </div>
+              <div class="folder-count">1,240 files</div>
+            </div>
+            <div class="folder-row">
+              <div class="folder-icon-wrap">📁</div>
+              <div class="folder-info">
+                <div class="folder-name">Youth Ministry</div>
+                <div class="folder-path">/Volumes/MediaDrive/Youth</div>
+              </div>
+              <div class="folder-count">348 files</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <button class="add-folder-btn" id="add-folder-btn" onclick="demoAddFolder()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add folder…
+            </button>
+          </div>
+          <div id="folder-added" style="display:none;margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(76,175,80,.1);font-size:12px;color:var(--green);font-weight:600;">
+            ✓ Beacon is now watching 3 folders · 47 new files found — AI analysis starting…
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: AI Analysis -->
+      <div class="hiw-demo-panel" id="panel2">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">AI Analysis — Running</span></div>
+        <div class="demo-body">
+          <div class="analysis-grid" id="analysis-grid"></div>
+          <div style="margin-top:14px;padding:10px 14px;border-radius:10px;background:var(--bg);box-shadow:var(--shadow-inset);display:flex;align-items:center;gap:10px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="animation:spin .8s linear infinite;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span style="font-size:12px;color:var(--text-muted)" id="analysis-status-txt">Analyzing 47 files in background…</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Search -->
+      <div class="hiw-demo-panel" id="panel3">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">Beacon Search — ⌘K</span></div>
+        <div class="demo-body" style="display:flex;flex-direction:column;height:100%;">
+          <div class="s-bar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="s-input" id="s-input-display"></span><span class="s-cursor" id="s-cursor"></span>
+          </div>
+          <div class="s-results" id="s-results"></div>
+          <div class="s-meta" id="s-meta"></div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Face Recognition -->
+      <div class="hiw-demo-panel" id="panel4">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">People — Face Recognition</span></div>
+        <div class="demo-body">
+          <div class="face-demo-wrap">
+            <div class="face-stage" id="face-stage">
+              <div class="face-img-label">🎬</div>
+              <div class="face-box" id="fb1" style="top:18%;left:20%;width:22%;height:36%;opacity:0;">
+                <div class="face-name-tag" id="fn1">Pastor John</div>
+              </div>
+              <div class="face-box" id="fb2" style="top:15%;left:55%;width:18%;height:30%;opacity:0;">
+                <div class="face-name-tag" id="fn2">Sarah W.</div>
+              </div>
+              <div class="face-box" id="fb3" style="top:45%;left:36%;width:16%;height:28%;opacity:0;">
+                <div class="face-name-tag" id="fn3">Marcus T.</div>
+              </div>
+            </div>
+            <div class="face-matches" id="face-matches">
+              <div style="font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;padding:4px 0 6px;">Found in this clip</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: Cloud Import -->
+      <div class="hiw-demo-panel" id="panel5">
+        <div class="demo-titlebar"><div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div><span class="demo-title-txt">Cloud Storage — Shared Link</span></div>
+        <div class="demo-body" style="display:flex;flex-direction:column;height:100%;">
+          <div class="cloud-url-bar">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="cloud-url-text" id="cloud-url-text">Paste a shared Dropbox / Google Drive / OneDrive link…</span>
+            <button style="padding:4px 10px;border-radius:7px;border:none;background:var(--accent);color:#fff;font-size:11px;font-weight:600;cursor:pointer;" onclick="demoCloudOpen()">Browse</button>
+          </div>
+          <div class="cloud-browser" style="flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;" id="cloud-browser-title">Files in shared folder</div>
+            <div class="cloud-file-list" id="cloud-files"></div>
+          </div>
+          <div class="import-bar">
+            <div class="import-prog"><div class="import-fill" id="import-fill" style="width:0%"></div></div>
+            <div class="import-txt" id="import-txt">Click "Browse" to open a shared cloud folder</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /hiw-demo -->
+  </div><!-- /hiw-wrap -->
+</section>
+
+<!-- ── AI Search Demo Section ── -->
+<section class="search-section" id="search-demo">
+  <div class="grid-bg"></div>
+  <div style="max-width:860px;margin:0 auto;position:relative;">
+    <div class="center">
+      <div class="section-label">Live Demo</div>
+      <h2 class="section-title" style="color:#fff;">Watch it find anything.</h2>
+      <p class="section-sub">AI understands the meaning of your search — not just filenames. Try any description.</p>
+    </div>
+    <div class="sdemo-window">
+      <div class="sdemo-top">
+        <div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+        <div class="sdemo-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span style="flex:1;font-size:13.5px;color:#fff;" id="sdemo-typed"></span><span class="s-cursor"></span>
+        </div>
+      </div>
+      <div class="sdemo-grid" id="sdemo-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cloud Integration ── -->
+<section id="cloud">
+  <div class="center reveal"><div class="section-label">Cloud Storage</div><h2 class="section-title">Works with your team's tools.</h2><p class="section-sub">Import footage from wherever your volunteers upload it — no manual downloading first.</p></div>
+  <div class="cloud-grid">
+    <div class="cloud-card reveal d1">
+      <div class="cloud-logo" style="background:linear-gradient(135deg,rgba(0,120,212,.12),rgba(0,120,212,.06))"><svg viewBox="0 0 48 48" width="34" height="34"><path fill="#0078D4" d="M28.1 15.3A13 13 0 0 0 4 22a8 8 0 0 0 1 16h31a6 6 0 0 0 1.5-11.8 10 10 0 0 0-9.4-10.9z"/></svg></div>
+      <div class="cloud-name">OneDrive</div>
+      <div class="cloud-desc">Browse personal OneDrive folders or paste a shared link. Supports personal and work Microsoft accounts.</div>
+      <div class="cloud-methods"><span class="cloud-method">Shared Link</span><span class="cloud-method">Sign In</span><span class="cloud-method">Device Code</span></div>
+    </div>
+    <div class="cloud-card reveal d2">
+      <div class="cloud-logo" style="background:linear-gradient(135deg,rgba(26,115,232,.12),rgba(26,115,232,.06))"><svg viewBox="0 0 87.3 78" width="34" height="30"><path fill="#1A73E8" d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L29.85 48H0c0 1.55.4 3.1 1.2 4.5L6.6 66.85zM43.65 24 27.55 0c-1.35.8-2.5 1.9-3.3 3.3L1.2 43.5A9 9 0 0 0 0 48h29.85L43.65 24zM73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 52.5c.8-1.4 1.2-2.95 1.2-4.5H57.45l6.2 12.35L73.55 76.8zM43.65 24 57.45 48h29.85c0-1.55-.4-3.1-1.2-4.5L62.95 3.3C62.15 1.9 61 .8 59.65 0L43.65 24zM29.85 48 13.75 76.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2L57.45 48H29.85z"/></svg></div>
+      <div class="cloud-name">Google Drive</div>
+      <div class="cloud-desc">Paste any Google Drive folder link and browse it inside Beacon. Download and import in three clicks.</div>
+      <div class="cloud-methods"><span class="cloud-method">Shared Link</span><span class="cloud-method">Sign In</span></div>
+    </div>
+    <div class="cloud-card reveal d3">
+      <div class="cloud-logo" style="background:linear-gradient(135deg,rgba(0,97,255,.12),rgba(0,97,255,.06))"><svg viewBox="0 0 52 48" width="30" height="28"><path fill="#0061FF" d="M13 0L0 8l13 8 13-8L13 0zM39 0L26 8l13 8 13-8L39 0zM0 24l13 8 13-8-13-8L0 24zM26 24l13 8 13-8-13-8-13 8zM13 34l13 8 13-8-13-8-13 8z"/></svg></div>
+      <div class="cloud-name">Dropbox</div>
+      <div class="cloud-desc">Import from Dropbox shared folders — ZIP files are automatically extracted and imported into Beacon.</div>
+      <div class="cloud-methods"><span class="cloud-method">Shared Link</span><span class="cloud-method">Sign In</span><span class="cloud-method">Auto-unzip</span></div>
+    </div>
+  </div>
+  <div style="max-width:700px;margin:36px auto 0;text-align:center;" class="reveal">
+    <div style="padding:22px 28px;border-radius:16px;background:var(--surface);box-shadow:var(--shadow-raise);">
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">💡 No app key needed for volunteers</div>
+      <div style="font-size:13.5px;color:var(--text-muted);line-height:1.65;">Volunteers paste a shared link — Beacon opens the folder in a built-in browser, they download files normally, and Beacon captures them automatically. <strong style="color:var(--accent)">No Microsoft/Google/Dropbox account required.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Download CTA ── -->
+<section class="cta-section" id="download">
+  <div class="cta-bg"></div>
+  <div class="cta-card reveal">
+    <div style="font-size:54px;margin-bottom:18px">⛪</div>
+    <h2 class="cta-title">Get Beacon free,<br/><span class="grad">today.</span></h2>
+    <p class="cta-sub">Download for macOS, install your AI models in two clicks, and never dig through folders again. Free and open source — forever.</p>
+    <a href="../release/Beacon-0.2.0-arm64.dmg" download="Beacon-0.2.0-arm64.dmg" class="btn-primary" style="font-size:17px;padding:16px 36px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Beacon 0.2.0 — Free
+    </a>
+    <div class="cta-reqs">
+      <div class="cta-req"><div class="req-dot"></div>macOS 12 Monterey or later</div>
+      <div class="cta-req"><div class="req-dot"></div>Apple Silicon (M1/M2/M3/M4)</div>
+      <div class="cta-req"><div class="req-dot"></div>8 GB RAM minimum</div>
+      <div class="cta-req"><div class="req-dot"></div>4 GB free disk space</div>
+    </div>
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(200,202,212,.5);font-size:13px;color:var(--text-dim);">
+      🔓 Open source &nbsp;·&nbsp; 🚀 Runs 100% offline &nbsp;·&nbsp; 🔒 Your data never leaves your Mac
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:10px;">
+    <div class="nav-logo-icon" style="width:26px;height:26px;border-radius:7px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z" fill="rgba(255,255,255,.9)"/><circle cx="12" cy="12" r="3" fill="rgba(255,255,255,.5)"/></svg></div>
+    <span style="font-size:16px;font-weight:800;letter-spacing:-.5px;">Beacon</span>
+  </div>
+  <div style="font-size:13px;color:var(--text-dim);">Church Media Library, Powered by AI · Free &amp; Open Source</div>
+  <div style="display:flex;gap:24px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+    <a href="#features" style="font-size:13px;color:var(--text-dim);text-decoration:none;">Features</a>
+    <a href="#how-it-works" style="font-size:13px;color:var(--text-dim);text-decoration:none;">How it Works</a>
+    <a href="#download" style="font-size:13px;color:var(--text-dim);text-decoration:none;">Download</a>
+  </div>
+  <div style="margin-top:20px;font-size:12px;color:var(--text-dim);">Built with ❤️ for church media teams · MIT License</div>
+</footer>
+
+<style>
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+</style>
+
+<script>
+// ─── Nav scroll ───────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 20))
+
+// ─── Particles ───────────────────────────────────────────────────────────────
+const pc = document.getElementById('particles')
+for (let i = 0; i < 16; i++) {
+  const p = document.createElement('div')
+  const sz = Math.random()*5+3
+  p.style.cssText = `position:absolute;border-radius:50%;width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*15}%;background:${Math.random()>.5?'var(--accent)':'var(--accent2)'};animation:floatP ${Math.random()*10+8}s linear ${Math.random()*8}s infinite;opacity:0;`
+  pc.appendChild(p)
+}
+const pStyle = document.createElement('style')
+pStyle.textContent = '@keyframes floatP{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-110vh) rotate(720deg);opacity:0}}'
+document.head.appendChild(pStyle)
+
+// ─── Hero grid ────────────────────────────────────────────────────────────────
+const hCols = [['#6B8FFF','#A78BFA'],['#4CAF50','#81C784'],['#FF9800','#FFB74D'],['#E91E63','#F48FB1'],['#00BCD4','#80DEEA'],['#9C27B0','#CE93D8'],['#FF5722','#FF8A65'],['#2196F3','#64B5F6'],['#8BC34A','#AED581'],['#FFC107','#FFD54F']]
+const hLabels = ['Sunday Service','Baptism 2024','Worship Team','Youth Camp','Easter Sunday','Sermon Series','Community Day','Choir Practice','Christmas Eve','Missions Trip']
+const hg = document.getElementById('hero-grid')
+hCols.forEach(([c1,c2], i) => {
+  const d = document.createElement('div')
+  d.className = 'mcard'
+  d.innerHTML = `<div class="mcard-inner" style="background:linear-gradient(135deg,${c1}22,${c2}33)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c1}" stroke-width="1.5" opacity=".7">${i%3===0?'<polygon points="5 3 19 12 5 21 5 3"/>':'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'}</svg></div><div class="mcard-tag">${hLabels[i]}</div>${i%3!==1?'<div class="mcard-ai">AI</div>':''}`
+  hg.appendChild(d)
+})
+
+// ─── Hero typewriter ──────────────────────────────────────────────────────────
+const heroSearchEl = document.getElementById('hero-search')
+const heroQueries = ['baptism service outdoors 2024','pastor preaching hands raised','worship team at sunset','kids laughing at summer camp','Christmas candle choir']
+let hqi=0,hci=0,hDel=false
+function heroType() {
+  const q = heroQueries[hqi]
+  if (!hDel) { heroSearchEl.textContent = q.slice(0,++hci); if(hci>=q.length){hDel=true;setTimeout(heroType,1800);return} }
+  else { heroSearchEl.textContent = q.slice(0,--hci); if(hci===0){hDel=false;hqi=(hqi+1)%heroQueries.length} }
+  setTimeout(heroType, hDel?32:68)
+}
+setTimeout(heroType, 1400)
+
+// ─── How it Works ─────────────────────────────────────────────────────────────
+let hiwCurrent = 0
+let hiwTimer = null
+let hiwPBTimer = null
+
+const hiwDemos = [runInstall, runFolders, runAnalysis, runSearch, runFaces, runCloud]
+
+function hiwGo(idx) {
+  clearTimeout(hiwTimer)
+  clearInterval(hiwPBTimer)
+  // Deactivate old
+  document.querySelectorAll('.hiw-step-btn').forEach(b => b.classList.remove('active'))
+  document.querySelectorAll('.hiw-demo-panel').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.hiw-progress-bar').forEach(b => { b.style.transition='none'; b.style.width='0%' })
+  // Activate new
+  hiwCurrent = idx
+  document.querySelector(`[data-step="${idx}"]`).classList.add('active')
+  document.getElementById(`panel${idx}`).classList.add('active')
+  // Animate progress bar over 6s then advance
+  const pb = document.getElementById(`hpb${idx}`)
+  setTimeout(() => {
+    pb.style.transition = 'width 6s linear'
+    pb.style.width = '100%'
+  }, 50)
+  hiwTimer = setTimeout(() => hiwGo((idx+1)%6), 6200)
+  // Run the demo animation
+  hiwDemos[idx]()
+}
+
+// Auto-start
+setTimeout(() => hiwGo(0), 800)
+
+// ─── Demo 0: Install ──────────────────────────────────────────────────────────
+function runInstall() {
+  // Reset
+  for(let i=0;i<4;i++){
+    document.getElementById(`ib${i}`).style.transition='none'
+    document.getElementById(`ib${i}`).style.width='0%'
+    document.getElementById(`is${i}`).textContent='Waiting…'
+    document.getElementById(`is${i}`).style.color='var(--text-dim)'
+  }
+  const items = [
+    {dur:800, label:'Installing…', done:'✓ Ready'},
+    {dur:2200, label:'Downloading…', done:'✓ Ready'},
+    {dur:1600, label:'Downloading…', done:'✓ Ready'},
+    {dur:600, label:'Installing…', done:'✓ Ready'},
+  ]
+  let delay = 200
+  items.forEach((item, i) => {
+    setTimeout(() => {
+      document.getElementById(`is${i}`).textContent = item.label
+      document.getElementById(`is${i}`).style.color = 'var(--accent)'
+      document.getElementById(`ib${i}`).style.transition = `width ${item.dur}ms linear`
+      document.getElementById(`ib${i}`).style.width = '100%'
+      setTimeout(() => {
+        document.getElementById(`is${i}`).textContent = item.done
+        document.getElementById(`is${i}`).style.color = 'var(--green)'
+      }, item.dur + 100)
+    }, delay)
+    delay += item.dur + 500
+  })
+}
+
+// ─── Demo 1: Add Folders ──────────────────────────────────────────────────────
+function runFolders() {
+  document.getElementById('folder-added').style.display = 'none'
+  document.getElementById('add-folder-btn').style.opacity = '1'
+  // Remove any added rows
+  const rows = document.querySelectorAll('.folder-row.demo-added')
+  rows.forEach(r => r.remove())
+}
+function demoAddFolder() {
+  const btn = document.getElementById('add-folder-btn')
+  btn.style.opacity = '0.5'
+  setTimeout(() => {
+    const row = document.createElement('div')
+    row.className = 'folder-row demo-added'
+    row.style.opacity = '0'; row.style.transform = 'translateY(8px)'; row.style.transition = 'all .3s'
+    row.innerHTML = `<div class="folder-icon-wrap">📁</div><div class="folder-info"><div class="folder-name">Christmas 2024</div><div class="folder-path">/Users/media/Christmas2024</div></div><div class="folder-count" style="color:var(--accent)">Scanning…</div>`
+    document.getElementById('folder-list').appendChild(row)
+    requestAnimationFrame(() => { row.style.opacity='1'; row.style.transform='translateY(0)' })
+    setTimeout(() => {
+      row.querySelector('.folder-count').textContent = '47 files'
+      row.querySelector('.folder-count').style.color = 'var(--accent)'
+      document.getElementById('folder-added').style.display = 'block'
+    }, 1200)
+  }, 400)
+}
+
+// ─── Demo 2: AI Analysis ──────────────────────────────────────────────────────
+const analysisItems = [
+  { emoji:'🎬', tags:['sermon','indoor','crowd'], color:'#6B8FFF', prog:78 },
+  { emoji:'📸', tags:['outdoor','smile','golden hour'], color:'#FF9800', prog:100 },
+  { emoji:'🎵', tags:['worship','stage','concert'], color:'#E91E63', prog:45 },
+  { emoji:'🙏', tags:['prayer','close-up'], color:'#4CAF50', prog:100 },
+  { emoji:'🎤', tags:['speaking','microphone'], color:'#9C27B0', prog:62 },
+  { emoji:'👨‍👩‍👧', tags:['family','baptism','water'], color:'#00BCD4', prog:100 },
+]
+function runAnalysis() {
+  const grid = document.getElementById('analysis-grid')
+  grid.innerHTML = ''
+  analysisItems.forEach((item, i) => {
+    const card = document.createElement('div')
+    card.className = 'analysis-card'
+    card.innerHTML = `
+      <div class="analysis-thumb" style="background:linear-gradient(135deg,${item.color}18,${item.color}08)">${item.emoji}</div>
+      <div class="analysis-tags" id="atags${i}"></div>
+      <div class="analysis-bar"><div class="a-progress"><div class="a-fill" id="af${i}" style="width:0%"></div></div></div>
+      <div class="analysis-status" id="ast${i}" style="color:var(--text-dim);font-size:10px;padding:2px 8px 6px">${item.prog<100?'Analyzing…':'✓ Done'}</div>
+    `
+    grid.appendChild(card)
+    const delay = i * 280
+    setTimeout(() => {
+      document.getElementById(`af${i}`).style.width = item.prog + '%'
+      document.getElementById(`ast${i}`).textContent = item.prog < 100 ? 'Analyzing…' : '✓ Done'
+      document.getElementById(`ast${i}`).style.color = item.prog < 100 ? 'var(--accent)' : 'var(--green)'
+      item.tags.forEach((tag, ti) => {
+        setTimeout(() => {
+          const t = document.createElement('span')
+          t.className = 'atag'
+          t.textContent = tag
+          document.getElementById(`atags${i}`).appendChild(t)
+          requestAnimationFrame(() => t.classList.add('show'))
+        }, ti * 200 + 300)
+      })
+    }, delay)
+  })
+}
+
+// ─── Demo 3: Search ───────────────────────────────────────────────────────────
+const searchQueries = [
+  { q:'baptism in the lake with congregation', results:[
+    {emoji:'🏊',label:'Lake Baptism May',score:'97%',c:'#1a6b8f'},
+    {emoji:'💧',label:'River Baptism 2023',score:'94%',c:'#1a4a6b'},
+    {emoji:'⛪',label:'Pool Baptism Easter',score:'89%',c:'#0d3d5c'},
+  ]},
+  { q:'worship team singing hands raised', results:[
+    {emoji:'🎵',label:'Sunday Worship Live',score:'98%',c:'#6b3d8f'},
+    {emoji:'🎤',label:'Conference Set',score:'93%',c:'#5a2a7a'},
+    {emoji:'✨',label:'Christmas Eve Praise',score:'87%',c:'#4a1a6b'},
+  ]},
+  { q:'pastor preaching with cross background', results:[
+    {emoji:'🙏',label:'Easter Sunday Sermon',score:'96%',c:'#8f5a1a'},
+    {emoji:'📖',label:'Vision Sunday 2024',score:'91%',c:'#7a4a0d'},
+    {emoji:'✝️',label:'Series Week 3 Msg',score:'85%',c:'#6b3a0d'},
+  ]},
+]
+let sqIdx = 0, sqTyping = false
+function runSearch() {
+  sqIdx = 0
+  runSearchQuery()
+}
+function runSearchQuery() {
+  const { q, results } = searchQueries[sqIdx % searchQueries.length]
+  sqIdx++
+  const inp = document.getElementById('s-input-display')
+  const res = document.getElementById('s-results')
+  const meta = document.getElementById('s-meta')
+  inp.textContent = ''
+  res.innerHTML = ''
+  meta.textContent = ''
+  let ci = 0
+  const type = () => {
+    inp.textContent = q.slice(0, ++ci)
+    if (ci < q.length) setTimeout(type, 42)
+    else {
+      meta.textContent = `${results.length} results · 0.31s`
+      results.forEach((r, i) => {
+        const c = document.createElement('div')
+        c.className = 's-card'
+        c.innerHTML = `<div class="s-card-inner" style="background:linear-gradient(135deg,${r.c}cc,${r.c}88);font-size:32px">${r.emoji}</div><div class="s-card-label">${r.label}</div><div class="s-card-score">${r.score}</div>`
+        res.appendChild(c)
+        setTimeout(() => c.classList.add('show'), 180 + i*120)
+      })
+    }
+  }
+  setTimeout(type, 200)
+}
+
+// ─── Demo 4: Faces ────────────────────────────────────────────────────────────
+const faceData = [
+  { id:'fb1', name:'Pastor John', emoji:'👨‍💼', clips:'247 clips', conf:'99%', delay:400 },
+  { id:'fb2', name:'Sarah W.', emoji:'👩‍🎤', clips:'182 clips', conf:'97%', delay:900 },
+  { id:'fb3', name:'Marcus T.', emoji:'👨‍🎸', clips:'94 clips', conf:'95%', delay:1400 },
+]
+function runFaces() {
+  faceData.forEach(f => {
+    const box = document.getElementById(f.id)
+    box.style.opacity = '0'
+    box.classList.remove('found')
+  })
+  document.querySelectorAll('.face-match-row').forEach(r => r.remove())
+  faceData.forEach(f => {
+    setTimeout(() => {
+      const box = document.getElementById(f.id)
+      box.style.opacity = '1'
+      box.style.boxShadow = '0 0 0 2px var(--accent), 0 0 16px rgba(107,143,255,.4)'
+      setTimeout(() => box.classList.add('found'), 100)
+      // Add match row
+      const row = document.createElement('div')
+      row.className = 'face-match-row'
+      row.innerHTML = `<div class="face-avatar">${f.emoji}</div><div class="face-match-info"><div class="face-match-name">${f.name}</div><div class="face-match-count">${f.clips}</div></div><div class="face-match-conf">${f.conf}</div>`
+      document.getElementById('face-matches').appendChild(row)
+      setTimeout(() => row.classList.add('show'), 100)
+    }, f.delay)
+  })
+}
+
+// ─── Demo 5: Cloud ────────────────────────────────────────────────────────────
+const cloudFiles = [
+  { name:'Sunday_May12_Main.mp4', size:'2.4 GB', emoji:'🎬', status:'', statusColor:'' },
+  { name:'Worship_SetA.mov', size:'890 MB', emoji:'🎵', status:'', statusColor:'' },
+  { name:'Photos_May10_Mothers_day.zip', size:'2.0 GB', emoji:'📦', status:'', statusColor:'' },
+  { name:'BTS_footage.mp4', size:'340 MB', emoji:'🎥', status:'', statusColor:'' },
+]
+let cloudDemoRunning = false
+function runCloud() {
+  cloudDemoRunning = false
+  document.getElementById('cloud-url-text').textContent = 'Paste a shared Dropbox / Google Drive / OneDrive link…'
+  document.getElementById('cloud-files').innerHTML = ''
+  document.getElementById('import-fill').style.width = '0%'
+  document.getElementById('import-txt').textContent = 'Click "Browse" to open a shared cloud folder'
+}
+function demoCloudOpen() {
+  if (cloudDemoRunning) return
+  cloudDemoRunning = true
+  const urlEl = document.getElementById('cloud-url-text')
+  const filesEl = document.getElementById('cloud-files')
+  const fillEl = document.getElementById('import-fill')
+  const txtEl = document.getElementById('import-txt')
+
+  urlEl.textContent = 'https://www.dropbox.com/scl/fo/2fhzgthqrw5cfv…'
+  filesEl.innerHTML = ''
+  fillEl.style.width = '0%'
+  txtEl.textContent = 'Opening folder…'
+
+  cloudFiles.forEach((f, i) => {
+    setTimeout(() => {
+      const row = document.createElement('div')
+      row.className = 'cfile'
+      row.innerHTML = `<div class="cfile-icon">${f.emoji}</div><div class="cfile-name">${f.name}</div><div class="cfile-size">${f.size}</div><div class="cfile-status" id="cfs${i}" style="color:var(--text-dim)">—</div>`
+      filesEl.appendChild(row)
+      setTimeout(() => row.classList.add('show'), 50)
+    }, i * 250 + 400)
+  })
+
+  // Simulate downloading
+  setTimeout(() => {
+    txtEl.textContent = 'Downloading files… Beacon is capturing them automatically'
+    cloudFiles.forEach((f, i) => {
+      setTimeout(() => {
+        const s = document.getElementById(`cfs${i}`)
+        if (s) { s.textContent = '↓'; s.style.color = 'var(--accent)' }
+        setTimeout(() => {
+          if (s) { s.textContent = '✓'; s.style.color = 'var(--green)' }
+          fillEl.style.transition = 'width .6s ease'
+          fillEl.style.width = `${((i+1)/cloudFiles.length)*100}%`
+          if (i === cloudFiles.length - 1) {
+            txtEl.textContent = '✓ 4 files imported — AI analysis starting!'
+            txtEl.style.color = 'var(--green)'
+          }
+        }, 900)
+      }, i * 700 + 800)
+    })
+  }, cloudFiles.length * 250 + 800)
+}
+
+// ─── AI Search Demo Section ───────────────────────────────────────────────────
+const sdQueries = [
+  { q:'baptism pool with congregation watching', cards:[
+    {bg:'#1a6b8f',label:'Baptism Sunday May',match:'96%'},
+    {bg:'#1a4a6b',label:'Easter Baptism Pool',match:'91%'},
+    {bg:'#2a5a7a',label:'Lake Baptism 2023',match:'88%'},
+    {bg:'#0d3d5c',label:'Youth Baptisms',match:'82%'},
+  ]},
+  { q:'worship team singing with hands raised', cards:[
+    {bg:'#6b3d8f',label:'Sunday Worship Live',match:'97%'},
+    {bg:'#5a2a7a',label:'Conference Worship',match:'93%'},
+    {bg:'#4a1a6b',label:'Christmas Eve Set',match:'89%'},
+    {bg:'#7a4a8f',label:'Revival Night Praise',match:'85%'},
+  ]},
+  { q:'pastor speaking with cross visible', cards:[
+    {bg:'#8f5a1a',label:'Easter Sunday Sermon',match:'98%'},
+    {bg:'#7a4a0d',label:'Christmas Message',match:'94%'},
+    {bg:'#6b3a0d',label:'Series Week 3',match:'87%'},
+    {bg:'#5a2a0d',label:'Vision Sunday 2024',match:'84%'},
+  ]},
+]
+let sdIdx = 0, sdStarted = false
+const sdTypedEl = document.getElementById('sdemo-typed')
+function runSdQuery() {
+  const { q, cards } = sdQueries[sdIdx % sdQueries.length]
+  sdIdx++
+  const grid = document.getElementById('sdemo-grid')
+  grid.innerHTML = ''
+  sdTypedEl.textContent = ''
+  let ci = 0
+  const type = () => {
+    sdTypedEl.textContent = q.slice(0, ++ci)
+    if (ci < q.length) setTimeout(type, 44)
+    else {
+      cards.forEach((c, i) => {
+        const card = document.createElement('div')
+        card.className = 'sdemo-card'
+        card.innerHTML = `<div style="width:100%;height:100%;background:linear-gradient(135deg,${c.bg}cc,${c.bg}88);"></div><div class="sdemo-badge">${c.match}</div><div class="sdemo-label">${c.label}</div>`
+        grid.appendChild(card)
+        setTimeout(() => card.classList.add('show'), 200 + i * 120)
+      })
+      setTimeout(runSdQuery, 3500)
+    }
+  }
+  setTimeout(type, 400)
+}
+const sdObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !sdStarted) { sdStarted = true; runSdQuery() }
+}, { threshold: 0.3 })
+sdObs.observe(document.getElementById('search-demo'))
+
+// ─── Scroll reveal ────────────────────────────────────────────────────────────
+const revObs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.12 })
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el))
+
+// ─── Stat counters ────────────────────────────────────────────────────────────
+function animCount(el) {
+  const t = parseInt(el.dataset.count); if(isNaN(t)) return
+  let c = 0; const step = Math.max(1, Math.floor(t/36))
+  const iv = setInterval(() => { c = Math.min(c+step, t); el.textContent = c + (t===100?'%':'+'); if(c>=t) clearInterval(iv) }, 28)
+}
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.querySelectorAll('[data-count]').forEach(animCount); cObs.unobserve(e.target) } })
+}, { threshold: 0.5 })
+document.querySelectorAll('.stats-row').forEach(el => cObs.observe(el))
+</script>
+</body>
+</html>
