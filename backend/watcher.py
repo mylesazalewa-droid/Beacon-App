@@ -33,7 +33,10 @@ def start_watching(folder_paths: list[str], on_new_file: Callable, loop: asyncio
         from watchdog.observers import Observer
         from watchdog.events import FileSystemEventHandler
 
-        class Handler(FileSystemEventHandler, _MediaHandler):
+        # _MediaHandler must come first so its dispatch() (which filters by
+        # media type and fires the ingest callback) wins over
+        # FileSystemEventHandler's own no-op dispatch() in the MRO.
+        class Handler(_MediaHandler, FileSystemEventHandler):
             def __init__(self, loop):
                 FileSystemEventHandler.__init__(self)
                 _MediaHandler.__init__(self, loop)

@@ -107,7 +107,9 @@ def _get_text_embeddings() -> dict[str, 'np.ndarray'] | None:
     with torch.no_grad():
         for cat_name, prompts in CATEGORY_PROMPTS.items():
             inputs = _processor(text=prompts, return_tensors='pt', padding=True, truncation=True)
-            text_features = _model.get_text_features(**inputs)
+            out = _model.get_text_features(**inputs)
+            # transformers >=5.x returns a wrapped output instead of a raw tensor
+            text_features = out.pooler_output if hasattr(out, 'pooler_output') else out
             # normalize
             text_features = text_features / text_features.norm(dim=-1, keepdim=True)
             # mean pool across prompts
@@ -151,7 +153,8 @@ def classify_image(image_path: str) -> dict:
     try:
         with torch.no_grad():
             inputs = _processor(images=img, return_tensors='pt')
-            image_features = _model.get_image_features(**inputs)
+            out = _model.get_image_features(**inputs)
+            image_features = out.pooler_output if hasattr(out, 'pooler_output') else out
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             img_vec = image_features[0].numpy()
 
@@ -329,7 +332,8 @@ def _get_shot_type_embeddings() -> dict[str, 'np.ndarray'] | None:
     with torch.no_grad():
         for shot_name, prompts in SHOT_TYPE_PROMPTS.items():
             inputs = _processor(text=prompts, return_tensors='pt', padding=True, truncation=True)
-            text_features = _model.get_text_features(**inputs)
+            out = _model.get_text_features(**inputs)
+            text_features = out.pooler_output if hasattr(out, 'pooler_output') else out
             text_features = text_features / text_features.norm(dim=-1, keepdim=True)
             mean_feat = text_features.mean(dim=0)
             mean_feat = mean_feat / mean_feat.norm()
@@ -354,7 +358,8 @@ def classify_shot_type(image_path: str) -> str | None:
         img = Image.open(image_path).convert('RGB')
         with torch.no_grad():
             inputs = _processor(images=img, return_tensors='pt')
-            image_features = _model.get_image_features(**inputs)
+            out = _model.get_image_features(**inputs)
+            image_features = out.pooler_output if hasattr(out, 'pooler_output') else out
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             img_vec = image_features[0].numpy()
         scores = {k: float(np.dot(img_vec, v)) for k, v in embeddings.items()}
